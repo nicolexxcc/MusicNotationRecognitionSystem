@@ -1,6 +1,7 @@
 package grafficsLib;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Random;
 
 // produce random color
@@ -19,7 +20,7 @@ public class G {
     }
 
     //------------------------------V--------------------------------//
-    public static class V {
+    public static class V implements Serializable {
         // vector-----------------------//
         public int x, y;
         public static Transform T = new Transform();
@@ -29,6 +30,10 @@ public class G {
         public void set(V v) { this.set(v.x, v.y); }
 
         public void add(V v) { x += v.x; y += v.y; }
+
+        public void blend(V v, int k) {
+            set((k * x + v.x) / (k + 1), (k * y + v.y) / (k + 1));
+        }
 
         // (x', y') = (x * n / d + dx, y * n / d + dy)
         public void setT(V v) { set(v.tx(), v.ty()); }
@@ -60,7 +65,7 @@ public class G {
 
 
     //------------------------------VS--------------------------------//
-    public static class VS {
+    public static class VS implements Serializable{
         public V loc, size;
         public VS(int x, int y, int w, int h) {loc = new V(x, y); size = new V(w, h);}
         public void fill(Graphics g, Color c) {g.setColor(c); g.fillRect(loc.x, loc.y, size.x, size.y);}
@@ -96,7 +101,7 @@ public class G {
     }
 
     //------------------------------PolyLine--------------------------------//
-    public static class PL {
+    public static class PL implements Serializable{
         public V[] points;
         public PL(int count) {
             points = new V[count];
